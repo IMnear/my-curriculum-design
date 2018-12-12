@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     doAxios () {
-      this.$api.get('www.baidu.com', {}, response => {
+      this.$api.get('/users/get', {}, response => {
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data)
           // 请求成功，response为成功信息参数
@@ -36,6 +36,33 @@ export default {
           // 请求失败，response为失败信息
         }
       })
+      this.$api.post(
+        '/users/add',
+        {
+          'id': 312,
+          'name': 'zhangruiwen'
+        },
+        response => {
+          if (response.status >= 200 && response.status < 300) {
+            console.log(response.data)
+          } else {
+            console.log(response.message)
+          }
+        }
+      )
+      this.$api.delete(
+        '/users/delete',
+        {
+          'id': 2222
+        },
+        response => {
+          if (response.status >= 200 && response.status < 300) {
+            console.log(response.data)
+          } else {
+            console.log(response.message)
+          }
+        }
+      )
     }
   }
 }

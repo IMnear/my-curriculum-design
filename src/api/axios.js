@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 let http = axios.create({
-  baseURL: 'https://www.baidu.com/',
+  baseURL: 'http://120.78.1.13:3000',
   // 默认接口地址可配置
   withCredentials: false,
   // 设置跨域 需要 true 不需要 false
