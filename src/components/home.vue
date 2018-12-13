@@ -6,10 +6,14 @@
       </div>
     </el-col>
     <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-      <div class="grid-content bg-purple-light"></div>
+      <div class="grid-content bg-purple-light">
+        <el-button type="primary" @click="doSay">语音</el-button>
+      </div>
     </el-col>
     <el-col :xs="4" :sm="6" :md="8" :lg="9" :xl="11">
-      <div class="grid-content bg-purple"></div>
+      <div class="grid-content bg-purple">
+        <el-button type="primary" @click="goImgPerson">跳转</el-button>
+      </div>
     </el-col>
     <el-col :xs="8" :sm="6" :md="4" :lg="3" :xl="1">
       <div class="grid-content bg-purple-light"></div>
@@ -63,7 +67,15 @@ export default {
           }
         }
       )
+    },
+    doSay () {
+      const msg = new SpeechSynthesisUtterance('我叫文')
+      window.speechSynthesis.speak(msg)
+    },
+    goImgPerson () {
+      this.$router.push({name: 'imgPerson', params: { userId: 'wen' }})
     }
+
   }
 }
 </script>
