@@ -3,13 +3,14 @@ import Router from 'vue-router'
 import home from '@/components/home'
 import imgPerson from '@/components/img-person'
 import login from '@/components/login'
+import loading from '@/components/loading'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: home
     },
@@ -23,6 +24,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/',
+      name: 'loading',
+      component: loading
     }
   ]
 })
