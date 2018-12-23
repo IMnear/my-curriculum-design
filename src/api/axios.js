@@ -20,9 +20,19 @@ let http = axios.create({
 })
 
 function apiAxios (method, url, params, response) {
+  // 如果本地有token 则全部请求 带上token
+  let token = null
+  if (localStorage.token) {
+    console.log(localStorage.token)
+    token = 'Bearer ' + localStorage.token
+    console.log(token)
+  }
   http({
     method: method,
     url: url,
+    headers: {
+      'Authorization': token || ''
+    },
     data: method === 'POST' || method === 'PUT' ? params : null,
     params: method === 'GET' || method === 'DELETE' ? params : null
   }).then(function (res) {

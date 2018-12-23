@@ -27,8 +27,8 @@ export default {
       this.$api.post(
         '/users/login',
         {
-          'id': this.$data.account,
-          'name': this.$data.password
+          'username': this.$data.account,
+          'password': this.$data.password
         },
         response => {
           if (response.status >= 200 && response.status < 300) {
@@ -54,8 +54,8 @@ export default {
       this.$api.post(
         '/users/reg',
         {
-          'id': this.$data.account,
-          'name': this.$data.password
+          'username': this.$data.account,
+          'password': this.$data.password
         },
         response => {
           if (response.status >= 200 && response.status < 300) {

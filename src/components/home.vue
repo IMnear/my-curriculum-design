@@ -43,8 +43,8 @@ export default {
       this.$api.post(
         '/users/add',
         {
-          'id': 312,
-          'name': 'zhangruiwen'
+          'username': 312,
+          'password': 'zhangruiwen'
         },
         response => {
           if (response.status >= 200 && response.status < 300) {
