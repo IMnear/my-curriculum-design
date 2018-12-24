@@ -41,10 +41,10 @@ export default {
         }
       })
       this.$api.post(
-        '/users/add',
+        '/users/reg',
         {
           'username': 312,
-          'password': 'zhangruiwen'
+          'password': 11111
         },
         response => {
           if (response.status >= 200 && response.status < 300) {
@@ -57,7 +57,7 @@ export default {
       this.$api.delete(
         '/users/delete',
         {
-          'id': 2222
+          'id': 7
         },
         response => {
           if (response.status >= 200 && response.status < 300) {

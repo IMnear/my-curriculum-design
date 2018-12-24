@@ -6,26 +6,28 @@ let http = axios.create({
   withCredentials: false,
   // 设置跨域 需要 true 不需要 false
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-  },
-  transformRequest: [function (data) {
-    let newData = ''
-    for (let k in data) {
-      if (data.hasOwnProperty(k) === true) {
-        newData += encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) + '&'
-      }
-    }
-    return newData
-  }]
+    'Content-Type': 'application/json;charset=utf-8'
+  }
+  // 默认是json,"form-data 需要配置以下东西"
+  // headers: {
+  //   'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+  // },
+  // transformRequest: [function (data) {
+  //   let newData = ''
+  //   for (let k in data) {
+  //     if (data.hasOwnProperty(k) === true) {
+  //       newData += encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) + '&'
+  //     }
+  //   }
+  //   return newData
+  // }]
 })
 
 function apiAxios (method, url, params, response) {
   // 如果本地有token 则全部请求 带上token
   let token = null
   if (localStorage.token) {
-    console.log(localStorage.token)
     token = 'Bearer ' + localStorage.token
-    console.log(token)
   }
   http({
     method: method,
@@ -33,12 +35,19 @@ function apiAxios (method, url, params, response) {
     headers: {
       'Authorization': token || ''
     },
-    data: method === 'POST' || method === 'PUT' ? params : null,
-    params: method === 'GET' || method === 'DELETE' ? params : null
+    //  data 体内穿 ，params url 上传 通常 post和put data get和delete url params
+    data: method === 'POST' || method === 'DELETE' ? params : null,
+    params: method === 'GET' || method === 'GET' ? params : null
   }).then(function (res) {
     response(res)
   }).catch(function (err) {
     response(err)
+    console.log(err.response.status, '捕捉错误码')
+    if (err.response.status === 401) {
+      // token验证失效,清理本地token,并到登录页
+      localStorage.removeItem('token')
+      location.href = '#/login'
+    }
   })
 }
 

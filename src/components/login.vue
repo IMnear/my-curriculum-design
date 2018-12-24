@@ -42,7 +42,11 @@ export default {
               localStorage.setItem('token', response.data.result.token)
               console.log('登录', this.account, localStorage.token)
               console.log('跳转理由', this.$route.query.redirect)
-              this.$router.push(this.$route.query.redirect)
+              if (this.$route.query.redirect) {
+                this.$router.push(this.$route.query.redirect)
+              } else {
+                this.$router.push({name: 'home'})
+              }
             }
           } else {
             console.log(response.message)
