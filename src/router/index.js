@@ -4,6 +4,7 @@ import home from '@/components/home'
 import imgPerson from '@/components/img-person'
 import login from '@/components/login'
 import loading from '@/components/loading'
+import registration from '@/components/registration'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/',
       name: 'loading',
       component: loading
+    },
+    {
+      path: '/registration',
+      name: 'registration',
+      component: registration
     }
   ]
 })
