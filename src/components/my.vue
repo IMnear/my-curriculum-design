@@ -1,16 +1,15 @@
 <template>
   <div>
     {{msg}}
-    <el-button @click="search(where)">按照地点</el-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'registration',
+  name: 'my',
   data () {
     return {
-      msg: '挂号'
+      msg: '我的'
     }
   },
   created: function () {
@@ -18,10 +17,12 @@ export default {
     console.log(objParams, '路由传参')
     function getLocation () {
       if (navigator.geolocation) {
+        console.log('进入')
         navigator.geolocation.getCurrentPosition(showPosition)
       } else { console.log('Geolocation is not supported by this browser.') }
     }
     function showPosition (position) {
+      console.log('ok')
       console.log(position.coords.latitude, position.coords.longitude)
     }
     getLocation()

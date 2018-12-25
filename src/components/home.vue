@@ -1,21 +1,26 @@
 <template>
   <div class="all">
-    <div class="lefter" @click="doSay">
-      <div class="text" >智能挂号(语音/人脸/图片)</div>
+    <div class="lefter"
+         @click="goTowhere ('imgPerson')">
+      <div class="text">智能挂号(语音/人脸/图片)</div>
     </div>
-    <div class="left" @click="doAxios">
-      <div class="text" >智能问询(机器人图灵)</div>
+    <div class="left"
+         @click="goTowhere ('robot')">
+      <div class="text">智能问询(机器人图灵)</div>
     </div>
     <div class="center">
       <div class="explainer">
         <span>挂号</span>
       </div>
-      <div class="text" @click="goRegistration">快速挂号</div>
+      <div class="text"
+           @click="doAxios">快速挂号</div>
     </div>
-    <div class="right" @click="goImgPerson">
-      <div class="text" >我的个人信息界面</div>
+    <div class="right"
+         @click="goTowhere ('my')">
+      <div class="text">我的个人信息界面</div>
     </div>
-    <div class="righter">
+    <div class="righter"
+         @click="goTowhere ('news')">
       <div class="text">医疗新闻推荐(node爬虫)</div>
     </div>
   </div>
@@ -68,15 +73,8 @@ export default {
         }
       )
     },
-    doSay () {
-      const msg = new SpeechSynthesisUtterance('我叫文')
-      window.speechSynthesis.speak(msg)
-    },
-    goImgPerson () {
-      this.$router.push({name: 'imgPerson', params: { userId: 'wen' }})
-    },
-    goRegistration () {
-      this.$router.push({name: 'registration', params: { userId: 'wen' }})
+    goTowhere (where) {
+      this.$router.push({ name: where, params: { userId: 'wen' } })
     }
 
   }
@@ -174,7 +172,7 @@ body {
   will-change: transform;
   color: #fff;
   text-shadow: 0 0 5px rgba(100, 100, 255, 0.6);
-  text-align: center
+  text-align: center;
 }
 
 .lefter {

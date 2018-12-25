@@ -1,7 +1,6 @@
 # my-curriculum-design
+
 课程设计
-
-
 
 1.安装依赖
 
@@ -13,15 +12,13 @@ npm run dev‘
 
 3.打包
 
-npm run build 
+npm run build
 
-打包出dist静态部署即可
-
-
+打包出 dist 静态部署即可
 
 ## 技术栈
 
-vue vuex  vue-cli router 
+vue vuex vue-cli router
 
 axios
 
@@ -29,21 +26,23 @@ webpcak
 
 ElementUI
 
-
+百度地图
 
 ## 页面布局
 
-1.login登录
+1.login 登录
 
 2.主页
 
-3.图片导诊
+3.图片挂号
 
+4.智能机器人导诊
 
+5.node 爬虫新闻
 
+6.快速挂号
 
-
-
+7.个人信息
 
 ## 通用
 
@@ -87,7 +86,7 @@ export default {
 }
 ```
 
-#### 
+####
 
 ## [#](http://fed.guahao-inc.com/books/archives/coding-standards#HTML)HTML
 
@@ -139,7 +138,7 @@ bad:
 }
 ```
 
-#### 
+####
 
 ```
 
@@ -217,7 +216,7 @@ const prefixDomain = function (partner) {
 }
 ```
 
-#### 注释尽量采用 // 单行注释，除了 jsdoc 避免使用多行注释 /**/。
+#### 注释尽量采用 // 单行注释，除了 jsdoc 避免使用多行注释 /\*\*/。
 
 ```
 /**
@@ -232,4 +231,3 @@ function add (n, m) {
 // 这是简单的单行注释
 add(1, 0.3)
 ```
-
