@@ -2,16 +2,26 @@
   <div>
     {{msg}}
     <el-button @click="search(where)">按照地点</el-button>
+    <v-time title="nihao"
+            :list="list"
+            v-on:enlarge-text="fromson">人艰不拆</v-time>
+    <h3>{{mysonsay}}</h3>
   </div>
 </template>
 
 <script>
+import time from '@/components/time'
 export default {
   name: 'registration',
   data () {
     return {
-      msg: '挂号'
+      msg: '挂号',
+      list: [{ id: 1, name: 'wo' }, { id: 2, name: 'ni' }],
+      mysonsay: ''
     }
+  },
+  components: {
+    'v-time': time
   },
   created: function () {
     let objParams = this.$route.params
@@ -29,6 +39,10 @@ export default {
   methods: {
     doHeader () {
       console.log('这是头')
+    },
+    fromson (enlargeAmount) {
+      console.log(enlargeAmount)
+      this.$data.mysonsay = enlargeAmount
     }
   }
 }

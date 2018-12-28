@@ -13,7 +13,7 @@
         <span>挂号</span>
       </div>
       <div class="text"
-           @click="doAxios">快速挂号</div>
+           @click="goTowhere ('registration')">快速挂号</div>
     </div>
     <div class="right"
          @click="goTowhere ('my')">
