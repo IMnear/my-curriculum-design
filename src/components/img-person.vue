@@ -1,9 +1,15 @@
 <template>
   <div>
-    <img src="../assets/vv.jpg" alt="" usemap="#vv">
-        <map name="#vv" id="#vv">
-          <area shape="rect" coords="10,10,100,100" @click="doHeader" alt="头">
-        </map>
+    <img src="../assets/img/vv.jpg"
+         alt=""
+         usemap="#vv">
+    <map name="#vv"
+         id="#vv">
+      <area shape="rect"
+            coords="10,10,100,100"
+            @click="doHeader"
+            alt="头">
+    </map>
   </div>
 </template>
 
@@ -28,5 +34,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

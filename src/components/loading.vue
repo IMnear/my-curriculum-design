@@ -1,6 +1,7 @@
 <template>
   <div class='all'>
-    <canvas id='canvas' @click="goHome"></canvas>
+    <canvas id='canvas'
+            @click="goHome"></canvas>
   </div>
 </template>
 
@@ -12,13 +13,13 @@ export default {
       msg: '开始'
     }
   },
-  created: function () {},
+  created: function () { },
   mounted: function () {
-    var txt = '张瑞文'
+    var txt = '智能挂号'
     var txtH = 100
     var font = 'sans-serif'
     var rayColor1 = '#e0f7fa'
-    var rayColor2 = '#18ffff'
+    var rayColor2 = '#409EFF'
 
     var canvas = document.getElementById('canvas')
     var ctx = canvas.getContext('2d')
@@ -175,7 +176,7 @@ export default {
   },
   methods: {
     goHome () {
-      this.$router.push({name: 'home'})
+      this.$router.push({ name: 'home' })
     }
   }
 }

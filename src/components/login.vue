@@ -33,36 +33,38 @@
             </div>
           </div>
           <div class="cont_back_info">
-            <div class="cont_img_back_grey"> <img src="../assets/hospital.jpg"
+            <div class="cont_img_back_grey"> <img src="../assets/img/hospital.jpg"
                    alt="" /> </div>
           </div>
           <div class="cont_forms">
-            <div class="cont_img_back_"> <img src="../assets/hospital.jpg"
+            <div class="cont_img_back_"> <img src="../assets/img/hospital.jpg"
                    alt="" /> </div>
             <div class="cont_form_login"> <a href="#"
                  v-on:click="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
               <h2>登录</h2>
               <input type="text"
+                     v-model="account"
                      placeholder="用户名" />
               <!-- 以前是电子邮件 -->
               <input type="password"
+                     v-model="password"
                      placeholder="密码" />
               <button class="btn_login"
-                      onClick="cambiar_login()">登录</button>
+                      @click="doLogin">登录</button>
             </div>
             <div class="cont_form_sign_up"> <a href="#"
                  v-on:click="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
               <h2>注册</h2>
               <input type="text"
-                     placeholder="电子邮件" />
-              <input type="text"
+                     v-model="account"
                      placeholder="用户名" />
               <input type="password"
                      placeholder="密码" />
               <input type="password"
+                     v-model="password"
                      placeholder="确认密码" />
               <button class="btn_sign_up"
-                      onClick="cambiar_sign_up()">注册</button>
+                      @click="doReg">注册</button>
             </div>
           </div>
         </div>
@@ -193,5 +195,5 @@ export default {
 </script>
 
 <style scoped>
-@import "../assets/css/style.css";
+@import "../assets/css/login-style.css";
 </style>

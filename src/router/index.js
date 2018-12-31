@@ -16,15 +16,47 @@ export default new Router({
   routes: [{
     path: '/home',
     name: 'home',
-    component: home
-  },
-  {
-    path: '/imgPerson',
-    name: 'imgPerson',
-    component: imgPerson,
-    meta: {
-      requiresAuth: true
+    component: home,
+    children: [{
+      path: '/imgPerson',
+      name: 'imgPerson',
+      component: imgPerson,
+      meta: {
+        requiresAuth: true
+      }
+    }, {
+      path: '/registration',
+      name: 'registration',
+      component: registration,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/my',
+      name: 'my',
+      component: my,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/robot',
+      name: 'robot',
+      component: robot,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/news',
+      name: 'news',
+      component: news,
+      meta: {
+        requiresAuth: true
+      }
     }
+    ]
   },
   {
     path: '/login',
@@ -35,38 +67,6 @@ export default new Router({
     path: '/',
     name: 'loading',
     component: loading
-  },
-  {
-    path: '/registration',
-    name: 'registration',
-    component: registration,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/my',
-    name: 'my',
-    component: my,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/robot',
-    name: 'robot',
-    component: robot,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/news',
-    name: 'news',
-    component: news,
-    meta: {
-      requiresAuth: true
-    }
   },
   {
     path: '/baiduMap',
