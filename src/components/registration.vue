@@ -1,12 +1,5 @@
 <template>
-  <div>
-    {{msg}}
-    <el-button @click="search(where)">按照地点</el-button>
-    <v-time title="nihao"
-            :list="list"
-            v-on:enlarge-text="fromson">人艰不拆</v-time>
-    <h3>{{mysonsay}}</h3>
-  </div>
+  <div></div>
 </template>
 
 <script>
@@ -49,4 +42,5 @@ export default {
 </script>
 
 <style scoped>
+@import "../assets/css/registration-style.css";
 </style>
