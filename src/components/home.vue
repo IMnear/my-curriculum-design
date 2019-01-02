@@ -13,8 +13,10 @@
             </div>
             <div class="el__content">
               <div class="el__text">Smart registered</div>
-              <div class="el__close-btn"></div>
-              <div class="showrouter">
+              <div class="el__close-btn"
+                   @click="closeMyshow('imgPerson')"></div>
+              <div class="showrouter"
+                   v-if="imgPerson">
                 <router-view></router-view>
               </div>
             </div>
@@ -40,8 +42,10 @@
             </div>
             <div class="el__content">
               <div class="el__text">Robot</div>
-              <div class="el__close-btn"></div>
-              <div class="showrouter">
+              <div class="el__close-btn"
+                   @click="closeMyshow('robot')"></div>
+              <div class="showrouter"
+                   v-if="robot">
                 <router-view></router-view>
               </div>
             </div>
@@ -67,8 +71,10 @@
             </div>
             <div class="el__content">
               <div class="el__text">Quick to register</div>
-              <div class="el__close-btn"></div>
-              <div class="showrouter">
+              <div class="el__close-btn"
+                   @click="closeMyshow('registration')"></div>
+              <div class="showrouter"
+                   v-if="registration">
                 <router-view></router-view>
               </div>
             </div>
@@ -94,8 +100,10 @@
             </div>
             <div class="el__content">
               <div class="el__text">Me</div>
-              <div class="el__close-btn"></div>
-              <div class="showrouter">
+              <div class="el__close-btn"
+                   @click="closeMyshow('my')"></div>
+              <div class="showrouter"
+                   v-if="my">
                 <router-view></router-view>
               </div>
             </div>
@@ -121,8 +129,10 @@
             </div>
             <div class="el__content">
               <div class="el__text">News</div>
-              <div class="el__close-btn"></div>
-              <div class="showrouter">
+              <div class="el__close-btn"
+                   @click="closeMyshow('news')"></div>
+              <div class="showrouter"
+                   v-if='news'>
                 <router-view></router-view>
               </div>
             </div>
@@ -148,7 +158,12 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: '开始'
+      msg: '开始',
+      robot: false,
+      imgPerson: false,
+      my: false,
+      news: false,
+      registration: false
     }
   },
   components: {
@@ -194,7 +209,13 @@ export default {
       )
     },
     goTowhere (where) {
-      this.$router.push({ name: where, params: { userId: 'wen' } })
+      this.$data[where] = !this.$data[where]
+      if (this.$data[where] === true) {
+        this.$router.push({ name: where, params: { userId: 'wen', address: '杭州' } })
+      }
+    },
+    closeMyshow (where) {
+      this.$data[where] = !this.$data[where]
     }
 
   },
