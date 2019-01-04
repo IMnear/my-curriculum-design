@@ -48,6 +48,7 @@ function apiAxios (method, url, params, response) {
       if (err.response.status === 401) {
         // token验证失效,清理本地token,并到登录页
         localStorage.removeItem('token')
+        localStorage.removeItem('userInfo')
         location.href = '#/login'
       }
     }

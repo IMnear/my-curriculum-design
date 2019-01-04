@@ -148,12 +148,11 @@ export default {
               })
             } else {
               localStorage.setItem('token', response.data.result.token)
-              localStorage.setItem('address', '杭州')
+              localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
               if (localStorage.token) {
                 this.$api.get('/users/get', {}, response => {
                   if (response.status >= 200 && response.status < 300) {
                     console.log(response.data)
-
                     // 请求成功，response为成功信息参数
                   } else {
                     console.log(response.message)
@@ -185,7 +184,7 @@ export default {
         response => {
           if (response.status >= 200 && response.status < 300) {
             console.log(response.data)
-            if (!response.data.isLogin) {
+            if (!response.data.isreg) {
               this.$notifye.error({
                 title: '错误',
                 message: '注册失败'
