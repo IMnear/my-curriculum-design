@@ -1,5 +1,19 @@
 <template>
-  <div></div>
+  <div>
+    <ul class="honeycomb"
+        lang="es">
+      <li class="honeycomb-cell"
+          v-for="x in list"
+          v-bind:key="x.index"
+          @click="showmeneed (x,'hospital')">
+        <img class="honeycomb-cell__image"
+             :src="x.img">
+        <div class="honeycomb-cell__title">{{x.name}}{{x.address||x.office}}<p>{{x.abstract}}</p>
+        </div>
+      </li>
+      <li class="honeycomb-cell honeycomb__placeholder"></li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -9,42 +23,49 @@ export default {
   data () {
     return {
       msg: '挂号',
-      list: [{ id: 1, name: 'wo' }, { id: 2, name: 'ni' }],
-      mysonsay: ''
+      list: [],
+      mysonsay: '',
+      postAddress: ''
     }
   },
   components: {
     'v-time': time
   },
   created: function () {
-    let objParams = this.$route.params
-    console.log(objParams, '路由传参')
-    var myStr = null
-    if (!this.$route.params.address) {
+    if (!localStorage.address) {
       this.$api.get('http://pv.sohu.com/cityjson', {}, response => {
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data)
-          myStr = response.data.cname
-          // 请求成功，response为成功信息参数
+          let strobj = response.data.split('=')[1]
+          this.$data.postAddress = JSON.parse(strobj.split(';')[0]).cname
         } else {
-          console.log(response.message)
+          console.log(response)
           // 请求失败，response为失败信息
         }
       })
     } else {
-      myStr = this.$route.params.address
+      this.$data.postAddress = localStorage.address
     }
-    console.log(myStr, '你的地址')
+  },
+  mounted () {
     // 地址操作
+    console.log(this.$data.postAddress)
     this.$api.post(
       '/hospital/gethospitalBy',
       {
         'type': 'address',
-        'value': myStr
+        'value': this.$data.postAddress
       },
       response => {
         if (response.status >= 200 && response.status < 300) {
           console.log(response.data)
+          this.$data.list = response.data.hospital
+          if (this.$data.list === undefined || this.$data.list.length === 0) {
+            this.$message({
+              message: '查询内容为空',
+              center: true
+            })
+          }
         } else {
           console.log(response.message)
         }
@@ -59,13 +80,17 @@ export default {
       console.log(enlargeAmount)
       this.$data.mysonsay = enlargeAmount
     },
-    showmeneed (what) {
+    showmeneed (what, type) {
       console.log(what)
       let postStr
-      console.log(postStr)
-      switch (what) {
+      let postObj
+      switch (type) {
         case 'hospital':
-          postStr = what
+          postStr = '/doctor/getDoctorBy'
+          postObj = {
+            type: 'hsid',
+            value: what.hsid
+          }
           break
         case 2:
           postStr = what
@@ -74,14 +99,19 @@ export default {
           postStr = what
       }
       this.$api.post(
-        '/users/reg',
-        {
-          'username': 312,
-          'password': 11111
-        },
+        postStr,
+        postObj,
         response => {
           if (response.status >= 200 && response.status < 300) {
             console.log(response.data)
+            this.$data.list = response.data.doctor
+            console.log(this.$data.list)
+            if (this.$data.list === undefined || this.$data.list.length === 0) {
+              this.$message({
+                message: '查询内容为空',
+                center: true
+              })
+            }
           } else {
             console.log(response.message)
           }

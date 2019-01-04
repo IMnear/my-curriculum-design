@@ -148,6 +148,19 @@ export default {
               })
             } else {
               localStorage.setItem('token', response.data.result.token)
+              localStorage.setItem('address', '杭州')
+              if (localStorage.token) {
+                this.$api.get('/users/get', {}, response => {
+                  if (response.status >= 200 && response.status < 300) {
+                    console.log(response.data)
+
+                    // 请求成功，response为成功信息参数
+                  } else {
+                    console.log(response.message)
+                    // 请求失败，response为失败信息
+                  }
+                })
+              }
               console.log('登录', this.account, localStorage.token)
               console.log('跳转理由', this.$route.query.redirect)
               if (this.$route.query.redirect) {

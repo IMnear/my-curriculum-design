@@ -42,11 +42,14 @@ function apiAxios (method, url, params, response) {
     response(res)
   }).catch(function (err) {
     response(err)
-    console.log(err.response.status, '捕捉错误码')
-    if (err.response.status === 401) {
-      // token验证失效,清理本地token,并到登录页
-      localStorage.removeItem('token')
-      location.href = '#/login'
+    console.log(err)
+    if (err.response.hasOwnProperty('status')) {
+      console.log(err.response.status, '捕捉错误码')
+      if (err.response.status === 401) {
+        // token验证失效,清理本地token,并到登录页
+        localStorage.removeItem('token')
+        location.href = '#/login'
+      }
     }
   })
 }
