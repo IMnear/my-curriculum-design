@@ -4,7 +4,20 @@
     <v-map></v-map>
     <v-echarts></v-echarts>
     <v-time></v-time>
-    <button @click="initWebpack">开始websocket</button>
+    <el-form :label-position="'left'"
+             label-width="80px"
+             :model="userInfo">
+      <el-form-item label="名字">
+        <el-input v-model="userInfo.username"></el-input>
+      </el-form-item>
+      <el-form-item label="性别">
+        <el-input v-model="userInfo.sex"></el-input>
+      </el-form-item>
+      <el-form-item label="年龄">
+        <el-input v-model="userInfo.age"></el-input>
+      </el-form-item>
+    </el-form>
+    <button @click="updatamy">确认更新</button>
   </div>
 </template>
 
@@ -16,7 +29,8 @@ export default {
   name: 'my',
   data () {
     return {
-      msg: '我的'
+      msg: '我的',
+      userInfo: {}
     }
   },
   components: {
@@ -38,32 +52,61 @@ export default {
       console.log(position.coords.latitude, position.coords.longitude)
     }
     getLocation()
+    let myneedid = JSON.parse(localStorage.userInfo).id
+    this.$api.post(
+      '/users/getUserById',
+      {
+        'id': myneedid
+      },
+      response => {
+        if (response.status >= 200 && response.status < 300) {
+          console.log(response.data)
+          this.$data.userInfo = response.data[0]
+          console.log(this.$data.userInfo, '个人信息')
+        } else {
+          console.log(response.message)
+        }
+      }
+    )
   },
   methods: {
     doHeader () {
       console.log('这是头')
     },
-    initWebpack () { // 初始化websocket
-      const wsuri = 'ws://localhost:4000'
-      this.websock = new WebSocket(wsuri)
-      // 这里面的this都指向vue
-      this.websock.onopen = this.websocketopen
-      this.websock.onmessage = this.websocketonmessage
-      this.websock.onclose = this.websocketclose
-      this.websock.onerror = this.websocketerror
-    },
-    websocketopen () { // 打开
-      console.log('WebSocket连接成功')
-    },
-    websocketonmessage (e) { // 数据接收
-      console.log(e)
-      this.productinfos = JSON.parse(e.data)
-    },
-    websocketclose () { // 关闭
-      console.log('WebSocket关闭')
-    },
-    websocketerror () { // 失败
-      console.log('WebSocket连接失败')
+    updatamy () {
+      this.$api.post(
+        '/users/update',
+        this.$data.userInfo,
+        response => {
+          if (response.status >= 200 && response.status < 300) {
+            console.log(response.data)
+            if (response.data.msg === 'succeed') {
+              this.$api.post(
+                '/users/getUserById',
+                {
+                  'id': this.$data.userInfo.id
+                },
+                response => {
+                  if (response.status >= 200 && response.status < 300) {
+                    console.log(response.data)
+                    this.$data.userInfo = response.data[0]
+                    console.log(this.$data.userInfo, '个人信息')
+                    this.$message({
+                      message: '恭喜您修改成功',
+                      type: 'success'
+                    })
+                  } else {
+                    console.log(response.message)
+                  }
+                }
+              )
+            }
+          } else {
+            console.log(response.message)
+            this.$message.error('错了哦，这是一条错误消息')
+          }
+        }
+      )
     }
   }
 }
