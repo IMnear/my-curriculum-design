@@ -15,8 +15,7 @@
               <div class="el__text">Smart registered</div>
               <div class="el__close-btn"
                    @click="closeMyshow('imgPerson')"></div>
-              <div class="showrouter"
-                   v-if="imgPerson">
+              <div v-if="imgPerson">
                 <router-view></router-view>
               </div>
             </div>
@@ -44,8 +43,7 @@
               <div class="el__text">Robot</div>
               <div class="el__close-btn"
                    @click="closeMyshow('robot')"></div>
-              <div class="showrouter"
-                   v-if="robot">
+              <div v-if="robot">
                 <router-view></router-view>
               </div>
             </div>
@@ -73,8 +71,7 @@
               <div class="el__text">Quick to register</div>
               <div class="el__close-btn"
                    @click="closeMyshow('registration')"></div>
-              <div class="showrouter"
-                   v-if="registration">
+              <div v-if="registration">
                 <router-view></router-view>
               </div>
             </div>
@@ -102,8 +99,7 @@
               <div class="el__text">Me</div>
               <div class="el__close-btn"
                    @click="closeMyshow('my')"></div>
-              <div class="showrouter"
-                   v-if="my">
+              <div v-if="my">
                 <router-view></router-view>
               </div>
             </div>
@@ -131,8 +127,7 @@
               <div class="el__text">News</div>
               <div class="el__close-btn"
                    @click="closeMyshow('news')"></div>
-              <div class="showrouter"
-                   v-if='news'>
+              <div v-if='news'>
                 <router-view></router-view>
               </div>
             </div>

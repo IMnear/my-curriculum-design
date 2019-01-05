@@ -7,6 +7,9 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Api from './api/axios.js'
 import store from './store/index'
+import echarts from 'echarts'
+
+Vue.prototype.$echarts = echarts
 Vue.prototype.$api = Api
 Vue.prototype.$store = store
 

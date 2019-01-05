@@ -28,6 +28,10 @@ ElementUI
 
 百度地图
 
+echarts
+
+websocket
+
 ## 页面布局
 
 1.login 登录

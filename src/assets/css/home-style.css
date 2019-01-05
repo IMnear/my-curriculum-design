@@ -7,10 +7,7 @@
   padding: 0;
 }
 
-.showrouter {
-  overflow-x: auto;
-  overflow-y: auto;
-}
+
 
 .cont {
   position: relative;
@@ -180,6 +177,7 @@
   -webkit-transition: all 0.1s;
   transition: all 0.1s;
   text-align: center;
+  overflow-y: auto;
 }
 
 .el.s--active .el__content {

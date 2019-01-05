@@ -1,15 +1,4 @@
 <template>
-  <!-- <div>
-    <h3>{{msg}}</h3>
-    <el-input v-model="account"
-              placeholder="id"></el-input>
-    <el-input v-model="password"
-              placeholder="用户名"></el-input>
-    <el-button type="success"
-               @click="doLogin">登录</el-button>
-    <el-button type="success"
-               @click="doReg">注册</el-button>
-  </div> -->
   <div>
     <div class="cotn_principal">
       <div class="cont_centrar">
