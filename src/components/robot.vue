@@ -2,29 +2,19 @@
   <div class="all">
     <div class="input-from">
       <el-input v-model='isay'
-                placeholder='请输入你要询问神奇的太极的话'></el-input>
+                placeholder='请输入你要询问的话'></el-input>
       <el-button type="primary"
                  @click='robot'>发送</el-button>
     </div>
     <div class="robot-say">
       <div>{{robotsaytext}}</div>
     </div>
-    <div class="square">
-      <div class="rect rect_one">
-        <div class="inner_circle rect_one_one">
-          <div class="dot rect_one_two"></div>
-        </div>
-      </div>
-      <div class="rect rect_two">
-        <div class="inner_circle rect_two_one">
-          <div class="dot rect_two_two"></div>
-        </div>
-      </div>
-    </div>
+    <v-world></v-world>
   </div>
 </template>
 
 <script>
+import world from '@/components/myEcharts-world.vue'
 export default {
   name: 'robot',
   data () {
@@ -34,6 +24,9 @@ export default {
       robotsay: true,
       robotsaytext: '看看回答了你啥？'
     }
+  },
+  components: {
+    'v-world': world
   },
   created: function () {
     let objParams = this.$route.params
@@ -116,91 +109,5 @@ export default {
   font-weight: bold;
   font-size: 18px;
   color: white;
-}
-.square {
-  padding: 0;
-  margin: 0;
-  width: 400px;
-  height: 400px;
-  position: relative;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  animation: rotate infinite linear 5s;
-  margin: 10% auto;
-  -webkit-animation: rotate infinite linear 5s;
-  margin: 10% auto;
-  -moz-animation: rotate infinite linear 5s;
-  margin: 10% auto;
-}
-
-.rect {
-  width: 400px;
-  height: 200px;
-  position: relative;
-  border: 1px #d2d2d2 solid;
-  border-bottom: none;
-}
-
-.inner_circle {
-  width: 200px;
-  height: 200px;
-  border-radius: 200px;
-  position: absolute;
-  z-index: 1;
-}
-
-.dot {
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  border-radius: 50%;
-}
-
-.rect_one {
-  border-radius: 200px 200px 0 0;
-  background: white;
-}
-
-.rect_one_one {
-  bottom: -100px;
-  left: 0;
-  background: black;
-}
-
-.rect_one_two {
-  background: white;
-}
-
-.rect_two {
-  border-radius: 0 0 200px 200px;
-  background: black;
-}
-
-.rect_two_one {
-  bottom: 100px;
-  right: 0;
-  background: white;
-}
-
-.rect_two_two {
-  background: black;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-    -webkit-transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-    -webkit-transform: rotate(360deg);
-  }
 }
 </style>

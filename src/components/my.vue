@@ -1,11 +1,17 @@
 <template>
   <div>
-    {{msg}}
-    <v-map></v-map>
-    <v-echarts></v-echarts>
-    <v-time></v-time>
-    <v-from></v-from>
-    <file-upload></file-upload>
+    <v-nav></v-nav>
+    <div class="all">
+      <div class="me">
+        <v-from></v-from>
+      </div>
+      <div class="echarts">
+        <v-echarts></v-echarts>
+      </div>
+      <div class="time">
+        <v-time></v-time>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -14,6 +20,8 @@ import map from '@/components/baiduMap.vue'
 import echarts from '@/components/myEcharts.vue'
 import time from '@/components/time.vue'
 import myfrom from '@/components/from.vue'
+import nav from '@/components/nav.vue'
+
 export default {
   name: 'my',
   data () {
@@ -26,7 +34,8 @@ export default {
     'v-map': map,
     'v-echarts': echarts,
     'v-time': time,
-    'v-from': myfrom
+    'v-from': myfrom,
+    'v-nav': nav
   },
   created: function () {
     let objParams = this.$route.params
@@ -41,4 +50,19 @@ export default {
 </script>
 
 <style scoped>
+.all {
+  background: whitesmoke;
+  padding: 30px;
+  display: flex;
+}
+.me {
+  padding: 20px;
+  flex-grow: 1; /* default 0 */
+}
+.time {
+  flex-grow: 1; /* default 0 */
+}
+.echarts {
+  flex-grow: 1; /* default 0 */
+}
 </style>
