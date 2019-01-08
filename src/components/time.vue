@@ -1,37 +1,17 @@
 <template>
-  <div class="wrapper">
-    <header>
-      <input type="text"
-             autofocus
-             placeholder="Enter a task..."
-             id="item">
-      <div id='animationDiv'><button id="add">
-          <svg version="1.1"
-               xmlns="http://www.w3.org/2000/svg"
-               xmlns:xlink="http://www.w3.org/1999/xlink"
-               x="0px"
-               y="0px"
-               viewBox="0 0 16 16"
-               style="enable-background:new 0 0 16 16;"
-               xml:space="preserve">
-            <g>
-              <path class="fill"
-                    d="M16,8c0,0.5-0.5,1-1,1H9v6c0,0.5-0.5,1-1,1s-1-0.5-1-1V9H1C0.5,9,0,8.5,0,8s0.5-1,1-1h6V1c0-0.5,0.5-1,1-1s1,0.5,1,1v6h6C15.5,7,16,7.5,16,8z" />
-            </g>
-          </svg>
-        </button></div>
-    </header>
-    <div class="container">
-      <ul class="todo"
-          id="todo">
-
-      </ul>
-      <hr class="divider">
-      <ul class="todo"
-          id="completed">
-
-      </ul>
+  <div class="list">
+    <h1>MY toDoList(我需要做的事)</h1>
+    <div class="input-from">
+      <el-input v-model="input"
+                placeholder="请输入要做的事"></el-input>
+      <el-button plain
+                 @click="pushlist">确定</el-button>
     </div>
+    <ul class="live"
+        v-for="x in mylist"
+        :key="x.index">
+      <li>{{x}}</li>
+    </ul>
   </div>
 </template>
 
@@ -41,8 +21,10 @@ export default {
   props: ['title', 'list'],
   data () {
     return {
-      msg: '新闻',
-      tofather: ''
+      msg: '需要做的事',
+      tofather: '',
+      input: '',
+      mylist: []
     }
   },
   created: function () {
@@ -69,451 +51,141 @@ export default {
         // console.log('图片加载成功')
         URL.revokeObjectURL(imgUrl)
       }
+    },
+    pushlist () {
+      this.$data.mylist.push(this.$data.input)
+      console.log(this.$data.mylist, '需要做的事情列表')
+      this.$data.input = ''
     }
   }
 }
 </script>
 
-<style scoped>
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
-  margin: 0;
+<style>
+.list {
+  margin-top: 80px;
+  padding: 30px;
+  text-align: center;
+  background-image: -webkit-radial-gradient(circle, #3c3b52 0%, #252233 80%);
+  background-image: radial-gradient(circle, #3c3b52 0%, #252233 80%);
+}
+.input-from {
+  display: flex;
+  justify-content: space-around;
+}
+h1 {
+  margin: 0.5em 0 0;
   padding: 0;
-  border: 0;
-  vertical-align: baseline;
+  text-shadow: 0 4px rgba(0, 0, 0, 0.2);
 }
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
+
+* {
+  -moz-box-sizing: padding-box;
+  box-sizing: padding-box;
 }
-body,
-html {
-  width: 100%;
-  height: 100%;
-}
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: none;
-  margin: 0;
-  padding: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
+
 ol,
 ul {
+  width: 28%;
+  display: inline-block;
+  text-align: left;
+  vertical-align: top;
+  background: rgba(0, 0, 0, 0.2);
+  color: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  padding: 1.5em;
+  margin: 2%;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.live {
+  overflow: hidden;
+  width: 80%;
+}
+.live > li {
   list-style: none;
-}
-hr {
-  border: 0;
-  height: 1px;
-  background: #ccc;
-}
-blockquote,
-q {
-  quotes: none;
-}
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: "";
-  content: none;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-* {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  box-sizing: border-box;
-}
-html,
-input,
-select,
-textarea,
-button,
-a {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
-body {
-  background: rgb(228, 228, 228);
-  padding: 20px 0 0 0;
-}
-
-div.wrapper {
-  background: #a99a92;
-  margin: 0px auto auto auto;
-  border-radius: 20px;
-  box-shadow: 0 6px 30px 18px rgba(199, 199, 199, 0.75);
-  transition: transform 0.3s ease-in;
-}
-
-div.wrapper:hover {
-  transform: scale(1.01);
-}
-
-@media only screen and (min-width: 800px) {
-  div.wrapper {
-    width: 45%;
-    height: 95%;
-  }
-}
-
-@media only screen and (min-width: 900px) {
-  div.wrapper {
-    width: 40%;
-    height: 95%;
-  }
-}
-
-@media only screen and (min-width: 1100px) {
-  div.wrapper {
-    width: 35%;
-    height: 95%;
-  }
-}
-
-header {
-  width: 100%;
-  height: 80px;
   position: relative;
-  top: 0; /* needed to keep on top */
-  bottom: 0;
-  padding: 15px;
-  z-index: 5;
-  background: #b43f3f;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
-  box-shadow: 0 2px 8px rgba(41, 10, 77, 0.5);
+  padding: 0 0 0 2em;
+  margin: 0 0 0.5em 10px;
+  -webkit-transition: 0.12s;
+  transition: 0.12s;
 }
-
-header input {
+.live > li::before {
+  position: absolute;
+  content: "\2022";
   font-family: Arial;
-  width: 100%;
-  font-size: 1rem;
-  height: 50px;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
-  float: left;
-  padding-right: 70px;
-  box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: #fdfdfd;
-  text-indent: 2%;
-  outline: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  -o-appearance: none;
-  appearance: none;
-  transition: all 0.5s ease;
-}
-
-header input:focus {
-  background: rgba(35, 14, 87, 0.5);
-}
-
-header input::-moz-placeholder {
-  color: white;
-}
-
-header div#animationDiv {
-  /*being used for mojs animation*/
-  height: 50px;
-  position: absolute;
-  right: 15px;
-  width: 50px;
-}
-
-header button {
-  width: 50px;
-  height: 50px;
-  position: absolute;
-
-  /*top: 15px; optional, it is so by default and right not needed as applied on parent! :D */
-  border: 0px;
-  outline: 0px;
-  border-color: transparent;
-  outline-style: 0px;
-  border-radius: 50%;
-  background: white;
-  cursor: pointer;
-  z-index: 1; /*to ensure its on top of container*/
-  box-shadow: -2px 2px 5px rgba(41, 10, 77, 0.5);
-
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  -o-appearance: none;
-  appearance: none;
-
-  transition: all 0.2s ease;
-}
-
-header button:hover {
-  box-shadow: none;
-  transform: scale(0.9);
-}
-
-header button:active {
-  background: rgba(191, 165, 223, 0.3);
-  outline: none;
-  outline-width: 0;
-  outline-color: transparent;
-}
-
-input:focus {
-}
-
-header button svg {
-  width: 40%;
-  height: 40%;
-  position: relative;
-  top: 5%;
-  fill: #b43f3f;
-  z-index: 5;
-}
-
-header button.rotate {
-  transform: rotate(180deg);
-  transition: all 0.3s ease;
-}
-
-div.container {
-  width: 100%;
-  float: left;
-}
-
-ul.todo {
-  list-style: none;
-}
-
-ul.todo li {
-  background: #fff;
-  color: #b43f3f;
-  padding: 15px;
-  margin: 15px 15px 15px 15px;
-  border-radius: 8px 0 8px 0;
-  box-shadow: -2px 2px 4px rgba(41, 10, 77, 0.5);
-  transition: all 0.2s ease-in;
-  transition: opacity 0.3s ease-out;
-  transition: opacity 0.2s ease-in;
-  /* transition: height 0.3s ease-in; */
-  max-height: 50px;
-  opacity: 1;
-  position: relative; /* so we can absolute the buttons*/
-}
-
-ul.todo li.deleted,
-ul.todo li.invisible {
-  opacity: 0;
-}
-
-ul.todo li:hover {
-  transform: scale(0.995);
-  box-shadow: none;
-  background: rgb(255, 241, 219);
-  background: -moz-linear-gradient(
-    left,
-    rgb(255, 231, 194),
-    rgb(255, 244, 228)
-  );
-  background: -webkit-linear-gradient(
-    left,
-    rgb(255, 231, 194),
-    rgb(255, 244, 228)
-  );
-  background: -o-linear-gradient(left, rgb(255, 231, 194), rgb(255, 244, 228));
-}
-
-ul.todo li:last-of-type {
-  margin-bottom: 0;
-}
-
-ul.todo li .buttons {
-  position: absolute;
-  width: 100px;
-  height: 50px;
+  color: #fff;
   top: 0;
-  right: -1%;
-}
-
-ul.todo li .buttons button {
-  width: 30px;
-  height: 30px;
-
-  margin: 10px 0 0 0;
-
-  float: left;
-  background: none;
-  position: relative;
-  border: 0px;
-  outline: none;
-  cursor: pointer;
-  box-shadow: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  -o-appearance: none;
-  appearance: none;
-}
-
-ul.todo li .buttons button:last-of-type::before {
-  content: " ";
-  width: 1px;
-  height: 30px;
-  background: #edf0f1;
-  position: absolute;
-  top: 0px;
   left: 0;
-  z-index: -20;
-}
-
-ul.todo li .buttons button svg {
-  width: 22px;
-  height: 22px;
-}
-
-ul.todo li .buttons button svg .fill {
-  transition: all 0.3s ease-out;
-}
-
-ul.todo li .buttons button.deleteButton svg .fill {
-  fill: #c0cecb;
-}
-
-ul.todo li .buttons button.checkButton svg .fill {
-  fill: rgb(47, 167, 77);
-}
-
-ul.todo li .buttons button.checkButton svg .noFill {
-  fill: none;
-}
-
-ul.todo:not(#completed) li .buttons button.checkButton:hover svg .noFill,
-ul.todo#completed li .buttons button.checkButton svg .noFill {
-  fill: rgb(84, 201, 113);
-}
-
-ul.todo:not(#completed) li .buttons button.checkButton:hover svg .fill,
-ul.todo#completed li .buttons button.checkButton svg .fill {
-  fill: #fff;
-}
-
-ul.todo li .buttons button.deleteButton:hover svg .fill {
-  fill: rgb(201, 41, 41);
-}
-
-hr.divider {
-  width: 50%;
-  margin: 20px auto 5px auto;
-}
-
-#completed {
+  text-align: center;
+  font-size: 2em;
   opacity: 0.5;
+  line-height: 0.75;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.live > li:hover {
+  color: #fff;
+}
+.live > li:hover::before {
+  -webkit-transform: scale(2);
+  -ms-transform: scale(2);
+  transform: scale(2);
+  opacity: 1;
+  text-shadow: 0 0 4px;
+  -webkit-transition: 0.1s;
+  transition: 0.1s;
+}
+.live.type2 > li::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 3px;
+  line-height: 0;
+  top: 0.27em;
+  left: 5px;
+}
+.live.type2 > li:hover::before {
+  -webkit-transform: none;
+  -ms-transform: none;
+  transform: none;
+  border-radius: 5px;
+  width: 25px;
+  left: -10px;
+  background: #ba5353;
 }
 
-#checkAnimateDiv {
-  width: 1px;
-  height: 1px;
-  z-index: -10;
-  position: relative;
-  bottom: 12px;
-  left: 15px;
+.live.numbers {
+  counter-reset: xxx 0;
+}
+.live.numbers > li::before {
+  content: counter(xxx, decimal) ".";
+  counter-increment: xxx 1;
+  font-family: "Roboto Condensed";
+  font-size: 1em;
+  opacity: 0.5;
+  line-height: 1.4;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.live.numbers > li:hover:before {
+  opacity: 1;
+  left: -10px;
+  -webkit-transform: none;
+  -ms-transform: none;
+  transform: none;
+  text-shadow: none;
+  -webkit-transition: 0.12s;
+  transition: 0.12s;
+}
+
+@font-face {
+  font-family: "Roboto Condensed";
+  font-style: normal;
+  font-weight: 400;
+  src: local("Roboto Condensed Regular"), local("RobotoCondensed-Regular"),
+    url(http://themes.googleusercontent.com/static/fonts/robotocondensed/v7/Zd2E9abXLFGSr9G3YK2MsFzqCfRpIA3W6ypxnPISCPA.woff)
+      format("woff");
 }
 </style>

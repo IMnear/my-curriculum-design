@@ -12,6 +12,7 @@
         <v-time></v-time>
       </div>
     </div>
+    <v-map></v-map>
   </div>
 </template>
 
