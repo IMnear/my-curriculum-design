@@ -2,7 +2,9 @@
   <div class="mybody">
     <div class="yuan">
       <img src="https://image.flaticon.com/icons/png/128/163/163807.png"
-           alt="">
+           alt="点击头像查看历史挂号单"
+           @click="showmy">
+      <p>点击上方头像查看您的历史挂号单</p>
     </div>
     <div class="container">
       <div class="box box1">
@@ -48,6 +50,18 @@
         </div>
       </div>
     </div>
+    <el-dialog title="历史挂号单"
+               :visible.sync="dialogTableVisible"
+               :modal-append-to-body='true'
+               :modal=false>
+      <el-table :data="mylist">
+        <el-table-column property="name"
+                         label="医生姓名"
+                         width="200"></el-table-column>
+        <el-table-column property="time"
+                         label="挂号时间"></el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -57,7 +71,10 @@ export default {
   props: ['title', 'list'],
   data () {
     return {
-      userInfo: {}
+      userInfo: {},
+      mylist: [],
+      dialogTableVisible: false,
+      doctorlist: []
     }
   },
   created: function () {
@@ -72,6 +89,19 @@ export default {
           console.log(response.data)
           this.$data.userInfo = response.data[0]
           console.log(this.$data.userInfo, '个人信息')
+        } else {
+          console.log(response.message)
+        }
+      }
+    )
+    this.$api.get(
+      '/doctor/get',
+      {
+      },
+      response => {
+        if (response.status >= 200 && response.status < 300) {
+          console.log(response.data)
+          this.$data.doctorlist = response.data
         } else {
           console.log(response.message)
         }
@@ -110,6 +140,30 @@ export default {
                 }
               )
             }
+          } else {
+            console.log(response.message)
+            this.$message.error('错了哦，这是一条错误消息')
+          }
+        }
+      )
+    },
+    showmy () {
+      console.log(this.$data.userInfo)
+      this.$api.post(
+        '/Overview/my',
+        { userid: this.$data.userInfo.id },
+        response => {
+          if (response.status >= 200 && response.status < 300) {
+            console.log(response.data)
+            this.$data.mylist = response.data
+            for (let i = 0; i < this.$data.mylist.length; i++) {
+              for (let j = 0; j < this.$data.doctorlist.length; j++) {
+                if (this.$data.mylist[i].ysid === this.$data.doctorlist[j].ysid) {
+                  this.$data.mylist[i].name = this.$data.doctorlist[j].name
+                }
+              }
+            }
+            this.$data.dialogTableVisible = true
           } else {
             console.log(response.message)
             this.$message.error('错了哦，这是一条错误消息')

@@ -8,7 +8,7 @@
           @click="x.ysid?guahao(x):showmeneed (x)">
         <img class="honeycomb-cell__image"
              :src="x.img">
-        <div class="honeycomb-cell__title">{{x.name}}{{x.address||x.office}}<p>{{x.abstract}}</p>
+        <div class="honeycomb-cell__title">{{x.name}}{{x.address!=undefined?'('+x.address+')':'('+x.office+')'}})<p>{{x.abstract}}</p>
         </div>
       </li>
       <li class="honeycomb-cell honeycomb__placeholder"></li>
