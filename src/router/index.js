@@ -8,13 +8,13 @@ import registration from '@/components/registration'
 import my from '@/components/my'
 import robot from '@/components/robot'
 import news from '@/components/news'
-import baiduMap from '@/components/baiduMap'
+import mylord from '@/components/mylord'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [{
-    path: '/home',
+    path: '/',
     name: 'home',
     component: home,
     children: [{
@@ -64,17 +64,14 @@ export default new Router({
     component: login
   },
   {
-    path: '/',
+    path: '/loading',
     name: 'loading',
     component: loading
   },
   {
-    path: '/baiduMap',
-    name: 'baiduMap',
-    component: baiduMap,
-    meta: {
-      requiresAuth: true
-    }
+    path: '/mylord',
+    name: 'mylord',
+    component: mylord
   }
   ]
 })

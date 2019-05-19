@@ -35,7 +35,7 @@ function apiAxios (method, url, params, response) {
     headers: {
       'Authorization': token || ''
     },
-    //  data 体内穿 ，params url 上传 通常 post和put data get和delete url params
+    //  data 体内传 ，params url 上传 通常 post和put data get和delete url params
     data: method === 'POST' || method === 'DELETE' ? params : null,
     params: method === 'GET' || method === 'GET' ? params : null
   }).then(function (res) {
@@ -43,14 +43,18 @@ function apiAxios (method, url, params, response) {
   }).catch(function (err) {
     response(err)
     console.log(err)
-    if (err.response.hasOwnProperty('status')) {
-      console.log(err.response.status, '捕捉错误码')
-      if (err.response.status === 401) {
-        // token验证失效,清理本地token,并到登录页
-        localStorage.removeItem('token')
-        localStorage.removeItem('userInfo')
-        location.href = '#/login'
+    if (typeof (err.response) === 'object') {
+      if (err.response.hasOwnProperty('status')) {
+        console.log(err.response.status, '捕捉错误码')
+        if (err.response.status === 401) {
+          // token验证失效,清理本地token,并到登录页
+          localStorage.removeItem('token')
+          localStorage.removeItem('userInfo')
+          location.href = '#/login'
+        }
       }
+    } else {
+      console.log('不是对象')
     }
   })
 }

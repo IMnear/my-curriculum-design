@@ -130,11 +130,8 @@ export default {
         response => {
           if (response.status >= 200 && response.status < 300) {
             console.log(response.data)
-            if (!response.data.isLogin) {
-              this.$notifye.error({
-                title: '错误',
-                message: '登陆失败'
-              })
+            if (response.data.isLogin === false) {
+              this.$message.error('登录失败，检查你的账号和密码')
             } else {
               localStorage.setItem('token', response.data.result.token)
               localStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
@@ -151,14 +148,18 @@ export default {
               }
               console.log('登录', this.account, localStorage.token)
               console.log('跳转理由', this.$route.query.redirect)
-              if (this.$route.query.redirect) {
-                this.$router.push(this.$route.query.redirect)
+              if (response.data.userInfo.isadmin) {
+                this.$router.push({ name: 'mylord' })
               } else {
-                this.$router.push({ name: 'home' })
+                if (this.$route.query.redirect) {
+                  this.$router.push(this.$route.query.redirect)
+                } else {
+                  this.$router.push({ name: 'home' })
+                }
               }
             }
           } else {
-            console.log(response.message)
+            // console.log(response.message)
           }
         }
       )
