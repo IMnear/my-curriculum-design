@@ -11,17 +11,16 @@
         <el-submenu index="2">
           <template slot="title"><i class="el-icon-message"></i>患者操作</template>
           <el-menu-item index="2-1"
-                        @click="showtable('isshow1')">患者信息表操作</el-menu-item>
-          <el-menu-item index="2-2"
-                        @click="showtable('isshow2')">选项2</el-menu-item>
-          <el-menu-item index="2-3">选项3</el-menu-item>
-          <el-menu-item index="2-4">选项4</el-menu-item>
+                        @click="showtable('isshowuser')">患者信息表操作</el-menu-item>
         </el-submenu>
         <el-submenu index="3">
           <template slot="title"><i class="el-icon-message"></i>医生/医院操作</template>
-          <el-menu-item index="3-1">医生信息表操作</el-menu-item>
-          <el-menu-item index="3-2">医院信息表操作</el-menu-item>
-          <el-menu-item index="3-3">就医历史表操作</el-menu-item>
+          <el-menu-item index="3-1"
+                        @click="showtable('isshowdoctor')">医生信息表操作</el-menu-item>
+          <el-menu-item index="3-2"
+                        @click="showtable('isshowhospital')">医院信息表操作</el-menu-item>
+          <el-menu-item index="3-3"
+                        @click="showtable('isshowOverview')">就医历史表操作</el-menu-item>
         </el-submenu>
         <el-submenu index="4">
           <template slot="title"><i class="el-icon-message"></i>权限操作</template>
@@ -52,62 +51,126 @@
              id="myChart"
              :style="{width: '600px', height: '600px'}">
         </div>
-        <el-table v-if="isshow1"
-                  :data="tableData"
-                  style="width: 100%;height:100%">
+        <el-table v-show="isshowuser"
+                  :data="userdata"
+                  style="">
           <el-table-column fixed
-                           prop="date"
-                           label="日期"
-                           width="150">
+                           prop="id"
+                           label="id">
           </el-table-column>
-          <el-table-column prop="name"
-                           label="姓名"
-                           width="120">
+          <el-table-column prop="username"
+                           label="姓名">
           </el-table-column>
-          <el-table-column prop="province"
-                           label="省份"
-                           width="120">
+          <el-table-column prop="sex"
+                           label="性别">
           </el-table-column>
-          <el-table-column prop="city"
-                           label="市区"
-                           width="120">
+          <el-table-column prop="rfid"
+                           label="身份证号">
           </el-table-column>
           <el-table-column prop="address"
-                           label="地址"
-                           width="300">
+                           label="地址">
           </el-table-column>
-          <el-table-column prop="zip"
-                           label="邮编"
-                           width="120">
+          <el-table-column prop="age"
+                           label="年龄">
           </el-table-column>
           <el-table-column fixed="right"
-                           label="操作"
-                           width="120">
+                           label="操作">
             <template slot-scope="scope">
-              <el-button @click.native.prevent="deleteRow(scope.$index, tableData)"
-                         type="text"
-                         size="small">
-                移除
-              </el-button>
+              <el-button size="mini"
+                         @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+              <el-button size="mini"
+                         type="danger"
+                         @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-table v-if="isshow2"
-                  :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
-                  style="width: 100%">
-          <el-table-column label="Date"
-                           prop="date">
+        <el-table v-show="isshowdoctor"
+                  :data="doctordata"
+                  style="">
+          <el-table-column fixed
+                           prop="hsid"
+                           label="id">
           </el-table-column>
-          <el-table-column label="Name"
-                           prop="name">
+          <el-table-column prop="name"
+                           label="姓名">
           </el-table-column>
-          <el-table-column align="right">
-            <template slot="header"
-                      slot-scope="scope">
-              <el-input v-model="search"
-                        size="mini"
-                        placeholder="输入关键字搜索" />
+          <el-table-column prop="sex"
+                           label="性别">
+          </el-table-column>
+          <el-table-column prop="office"
+                           label="科室">
+          </el-table-column>
+          <el-table-column prop="abstract"
+                           label="介绍">
+          </el-table-column>
+          <el-table-column label="图片">
+            <template slot-scope="scope">
+              <img :src="scope.row.img"
+                   class="doctorimg" />
             </template>
+          </el-table-column>
+          <el-table-column fixed="right"
+                           label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini"
+                         @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+              <el-button size="mini"
+                         type="danger"
+                         @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-table v-show="isshowhospital"
+                  :data="hospitaldata"
+                  style="">
+          <el-table-column fixed
+                           prop="hsid"
+                           label="id">
+          </el-table-column>
+          <el-table-column prop="name"
+                           label="姓名">
+          </el-table-column>
+          <el-table-column prop="address"
+                           label="地址">
+          </el-table-column>
+          <el-table-column prop="abstract"
+                           label="介绍">
+          </el-table-column>
+          <el-table-column label="图片">
+            <template slot-scope="scope">
+              <img :src="scope.row.img"
+                   class="doctorimg" />
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right"
+                           label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini"
+                         @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+              <el-button size="mini"
+                         type="danger"
+                         @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-table v-show="isshowOverview"
+                  :data="Overviewdata"
+                  style="">
+          <el-table-column fixed
+                           prop="id"
+                           label="id">
+          </el-table-column>
+          <el-table-column prop="time"
+                           label="时间">
+          </el-table-column>
+          <el-table-column prop="userid"
+                           label="用户id">
+          </el-table-column>
+          <el-table-column prop="ysid"
+                           label="医生id">
+          </el-table-column>
+          <el-table-column fixed="right"
+                           label="操作">
             <template slot-scope="scope">
               <el-button size="mini"
                          @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
@@ -127,6 +190,10 @@ export default {
   name: 'mylord',
   mounted () {
     this.drawLine()
+    this.getalluser()
+    this.getalldoctor()
+    this.getalhospital()
+    this.getallOverview()
   },
 
   methods: {
@@ -135,7 +202,7 @@ export default {
     },
     showtable (indexname) {
       // 控制显示数组
-      var showarr = ['isshow', 'isshow1', 'isshow2']
+      var showarr = ['isshow', 'isshowuser', 'isshowdoctor', 'isshowhospital', 'isshowOverview']
       for (let i = 0; i < showarr.length; i++) {
         if (indexname === showarr[i]) {
           this[showarr[i]] = true
@@ -168,66 +235,79 @@ export default {
           type: 'line'
         }]
       })
+    },
+    getalluser () {
+      this.$api.get(
+        '/users/get',
+        {},
+        response => {
+          if (response.status >= 200 && response.status < 300) {
+            this.userdata = response.data
+            console.log(this.userdata, '患者数据')
+          } else {
+            console.log(response.message)
+          }
+        }
+      )
+    },
+    getalldoctor () {
+      this.$api.get(
+        '/doctor/get',
+        {},
+        response => {
+          if (response.status >= 200 && response.status < 300) {
+            this.doctordata = response.data
+            console.log(this.doctordata, '医生数据')
+          } else {
+            console.log(response.message)
+          }
+        }
+      )
+    },
+    getalhospital () {
+      this.$api.get(
+        '/hospital/get',
+        {},
+        response => {
+          if (response.status >= 200 && response.status < 300) {
+            this.hospitaldata = response.data
+            console.log(this.hospitaldata, '医院数据')
+          } else {
+            console.log(response.message)
+          }
+        }
+      )
+    },
+    getallOverview () {
+      this.$api.get(
+        '/Overview/get',
+        {},
+        response => {
+          if (response.status >= 200 && response.status < 300) {
+            this.Overviewdata = response.data
+            console.log(this.Overviewdata, '挂号历史数据')
+          } else {
+            console.log(response.message)
+          }
+        }
+      )
     }
   },
   data () {
     return {
-      tableData: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-08',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-06',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-07',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
-      }],
       username: null,
       userInfo: null,
       isshow: true,
-      isshow1: false,
-      isshow2: false,
-      search: ''
+      isshowuser: false,
+      isshowdoctor: false,
+      isshowhospital: false,
+      isshowOverview: false,
+      search: '',
+      userdata: null,
+      doctordata: null,
+      hospitaldata: null,
+      Overviewdata: null
+
     }
   },
   created: function () {
@@ -248,5 +328,11 @@ export default {
 
 .el-aside {
   color: #333;
+}
+.doctorimg {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
 }
 </style>
