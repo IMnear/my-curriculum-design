@@ -24,26 +24,23 @@
         </el-submenu>
         <el-submenu index="4">
           <template slot="title"><i class="el-icon-message"></i>权限操作</template>
-          <el-menu-item index="4-1">选项1</el-menu-item>
-          <el-menu-item index="4-2">选项2</el-menu-item>
-          <el-menu-item index="4-3">选项3</el-menu-item>
-          <el-menu-item index="4-4">选项4</el-menu-item>
+          <el-menu-item index="4-1"
+                        @click="showtable('isshowquanxian')">管理者权限</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-aside>
 
     <el-container>
       <el-header style="text-align: right; font-size: 12px">
-        <el-dropdown>
-          <i class="el-icon-setting"
-             style="margin-right: 15px"></i>
+        <el-dropdown @command="loginout">
+          <span class="el-dropdown-link">
+            {{username}}<i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查看</el-dropdown-item>
-            <el-dropdown-item>新增</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
+            <el-dropdown-item command="a">返回客户端</el-dropdown-item>
+            <el-dropdown-item command="b">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <span>{{username}}</span>
       </el-header>
 
       <el-main style="padding:0">
@@ -67,23 +64,75 @@
           <el-table-column prop="rfid"
                            label="身份证号">
           </el-table-column>
-          <el-table-column prop="address"
+          <el-table-column prop="adress"
                            label="地址">
           </el-table-column>
           <el-table-column prop="age"
                            label="年龄">
           </el-table-column>
+          <el-table-column prop="phone"
+                           label="手机号">
+          </el-table-column>
+          <el-table-column prop="password"
+                           label="密码"
+                           v-show="false">
+          </el-table-column>
+          <el-table-column prop="isadmin"
+                           label="是否是管理员"
+                           v-show="false">
+          </el-table-column>
           <el-table-column fixed="right"
                            label="操作">
             <template slot-scope="scope">
               <el-button size="mini"
-                         @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                         @click="showtc(scope.$index, scope.row,'dialogFormuser')">Edit</el-button>
               <el-button size="mini"
                          type="danger"
-                         @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                         @click="deluser(scope.row)">Delete</el-button>
             </template>
           </el-table-column>
         </el-table>
+        <el-dialog title="用户信息修改"
+                   :visible.sync="dialogFormuser"
+                   append-to-body>
+          <el-form label-position="left"
+                   label-width="80px"
+                   :model="tceditobj">
+            <el-form-item label="id">
+              <el-input v-model="tceditobj.id"></el-input>
+            </el-form-item>
+            <el-form-item label="姓名">
+              <el-input v-model="tceditobj.username"></el-input>
+            </el-form-item>
+            <el-form-item label="性别">
+              <el-input v-model="tceditobj.sex"></el-input>
+            </el-form-item>
+            <el-form-item label="身份证">
+              <el-input v-model="tceditobj.rfid"></el-input>
+            </el-form-item>
+            <el-form-item label="地址">
+              <el-input v-model="tceditobj.adress"></el-input>
+            </el-form-item>
+            <el-form-item label="是否是管理员">
+              <el-input v-model="tceditobj.isadmin"></el-input>
+            </el-form-item>
+            <el-form-item label="手机号">
+              <el-input v-model="tceditobj.phone"></el-input>
+            </el-form-item>
+            <el-form-item label="年龄">
+              <el-input v-model="tceditobj.age"></el-input>
+            </el-form-item>
+            <el-form-item label="密码">
+              <el-input v-model="tceditobj.password"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer"
+               class="dialog-footer">
+            <el-button @click="dialogFormuser = false">取 消</el-button>
+            <el-button type="primary"
+                       @click="postedit()">确 定</el-button>
+          </div>
+        </el-dialog>
         <el-table v-show="isshowdoctor"
                   :data="doctordata"
                   style="">
@@ -180,6 +229,47 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-table v-show="isshowquanxian"
+                  :data="userdata"
+                  style="">
+          <el-table-column fixed
+                           prop="id"
+                           label="id">
+          </el-table-column>
+          <el-table-column prop="username"
+                           label="姓名">
+          </el-table-column>
+          <el-table-column prop="sex"
+                           label="性别">
+          </el-table-column>
+          <el-table-column prop="rfid"
+                           label="身份证号">
+          </el-table-column>
+          <el-table-column prop="adress"
+                           label="地址">
+          </el-table-column>
+          <el-table-column prop="age"
+                           label="年龄">
+          </el-table-column>
+          <el-table-column prop="phone"
+                           label="手机号">
+          </el-table-column>
+          <el-table-column prop="password"
+                           label="密码"
+                           v-show="false">
+          </el-table-column>
+          <el-table-column prop="isadmin"
+                           label="是否是管理员"
+                           v-show="false">
+          </el-table-column>
+          <el-table-column fixed="right"
+                           label="操作">
+            <template slot-scope="scope">
+              <el-button size="mini"
+                         @click="showtc(scope.$index, scope.row,'dialogFormuser')">升级为管理员</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </el-main>
     </el-container>
   </el-container>
@@ -197,12 +287,76 @@ export default {
   },
 
   methods: {
+    deluser (user) {
+      console.log(user, '用户')
+      this.$api.delete(
+        '/users/delete',
+        {
+          'id': user.id
+        },
+        response => {
+          console.log(response.data, response.data.msg)
+          if (response.data.msg === 'succeed') {
+            this.$notify({
+              title: '成功',
+              message: '删除成功',
+              type: 'success'
+            })
+            this.getalluser()
+          } else {
+            this.$notifye.error({
+              title: '错误',
+              message: '删除失败'
+            })
+          }
+        }
+      )
+    },
+    postedit () {
+      console.log(this.tceditobj, '当前修改提交数据')
+      this.$api.post(
+        '/users/update',
+        {
+          'id': this.tceditobj.id,
+          'username': this.tceditobj.username,
+          'sex': this.tceditobj.sex,
+          'rfid': this.tceditobj.rfid,
+          'adress': this.tceditobj.adress,
+          'phone': this.tceditobj.phone,
+          'password': this.tceditobj.password,
+          'age': this.tceditobj.age
+        },
+        response => {
+          console.log(response.data, response.data.msg)
+          if (response.data.msg === 'succeed') {
+            this.$notify({
+              title: '成功',
+              message: '修改成功',
+              type: 'success'
+            })
+            this.dialogFormuser = false
+            this.tceditobj = { id: null, username: null, sex: null, rfid: null, adress: null, phone: null, password: null, age: null }
+          } else {
+            this.$notifye.error({
+              title: '错误',
+              message: '修改失败'
+            })
+          }
+        }
+      )
+    },
+    loginout (index) {
+      if (index === 'b') {
+        localStorage.clear()
+      }
+      this.$router.push({ name: 'home' })
+    },
     deleteRow (index, rows) {
       rows.splice(index, 1)
     },
     showtable (indexname) {
       // 控制显示数组
-      var showarr = ['isshow', 'isshowuser', 'isshowdoctor', 'isshowhospital', 'isshowOverview']
+      var showarr = ['isshow', 'isshowuser', 'isshowdoctor', 'isshowhospital', 'isshowOverview', 'isshowquanxian']
       for (let i = 0; i < showarr.length; i++) {
         if (indexname === showarr[i]) {
           this[showarr[i]] = true
@@ -210,6 +364,11 @@ export default {
           this[showarr[i]] = false
         }
       }
+    },
+    showtc (index, row, indexname) {
+      console.log('传递信息', index, row, indexname)
+      this.tceditobj = row
+      this[indexname] = true
     },
     handleEdit (index, row) {
       console.log(index, row)
@@ -302,11 +461,14 @@ export default {
       isshowdoctor: false,
       isshowhospital: false,
       isshowOverview: false,
+      isshowquanxian: false,
       search: '',
       userdata: null,
       doctordata: null,
       hospitaldata: null,
-      Overviewdata: null
+      Overviewdata: null,
+      dialogFormuser: false,
+      tceditobj: { id: null, username: null, sex: null, rfid: null, adress: null, phone: null, password: null, age: null }
 
     }
   },
