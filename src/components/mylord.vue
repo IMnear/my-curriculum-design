@@ -266,7 +266,9 @@
                            label="操作">
             <template slot-scope="scope">
               <el-button size="mini"
-                         @click="showtc(scope.$index, scope.row,'dialogFormuser')">升级为管理员</el-button>
+                         @click="glycz(scope.row)">升级为管理员</el-button>
+              <el-button size="mini"
+                         @click="glycz(scope.row)">取消管理员</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -287,6 +289,9 @@ export default {
   },
 
   methods: {
+    glycz (user) {
+      console.log('yonghu', user)
+    },
     deluser (user) {
       console.log(user, '用户')
       this.$api.delete(
@@ -324,7 +329,8 @@ export default {
           'adress': this.tceditobj.adress,
           'phone': this.tceditobj.phone,
           'password': this.tceditobj.password,
-          'age': this.tceditobj.age
+          'age': this.tceditobj.age,
+          'isadmin': this.tceditobj.isadmin
         },
         response => {
           console.log(response.data, response.data.msg)
@@ -335,7 +341,7 @@ export default {
               type: 'success'
             })
             this.dialogFormuser = false
-            this.tceditobj = { id: null, username: null, sex: null, rfid: null, adress: null, phone: null, password: null, age: null }
+            this.tceditobj = { id: null, username: null, sex: null, rfid: null, adress: null, phone: null, password: null, age: null, isadmin: null }
           } else {
             this.$notifye.error({
               title: '错误',
@@ -468,7 +474,7 @@ export default {
       hospitaldata: null,
       Overviewdata: null,
       dialogFormuser: false,
-      tceditobj: { id: null, username: null, sex: null, rfid: null, adress: null, phone: null, password: null, age: null }
+      tceditobj: { id: null, username: null, sex: null, rfid: null, adress: null, phone: null, password: null, age: null, isadmin: null }
 
     }
   },
