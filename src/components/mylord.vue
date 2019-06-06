@@ -162,13 +162,51 @@
                            label="操作">
             <template slot-scope="scope">
               <el-button size="mini"
-                         @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                         @click="showtc(scope.$index, scope.row,'dialogFormdoctor')">Edit</el-button>
               <el-button size="mini"
                          type="danger"
-                         @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                         @click="deldoc(scope.row)">Delete</el-button>
             </template>
           </el-table-column>
         </el-table>
+        <el-dialog title="医生信息修改"
+                   :visible.sync="dialogFormdoctor"
+                   append-to-body>
+          <el-form label-position="left"
+                   label-width="80px"
+                   :model="tceditobj">
+            <el-form-item label="医生id">
+              <el-input v-model="tceditobj.ysid"></el-input>
+            </el-form-item>
+            <el-form-item label="姓名">
+              <el-input v-model="tceditobj.name"></el-input>
+            </el-form-item>
+            <el-form-item label="年龄">
+              <el-input v-model="tceditobj.age"></el-input>
+            </el-form-item>
+            <el-form-item label="图片">
+              <el-input v-model="tceditobj.img"></el-input>
+            </el-form-item>
+            <el-form-item label="性别">
+              <el-input v-model="tceditobj.sex"></el-input>
+            </el-form-item>
+            <el-form-item label="科室">
+              <el-input v-model="tceditobj.office"></el-input>
+            </el-form-item>
+            <el-form-item label="备注">
+              <el-input v-model="tceditobj.abstract"></el-input>
+            </el-form-item>
+            <el-form-item label="医院id">
+              <el-input v-model="tceditobj.hsid"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer"
+               class="dialog-footer">
+            <el-button @click="dialogFormdoctor = false">取 消</el-button>
+            <el-button type="primary"
+                       @click="postdocedit()">确 定</el-button>
+          </div>
+        </el-dialog>
         <el-table v-show="isshowhospital"
                   :data="hospitaldata"
                   style="">
@@ -195,13 +233,42 @@
                            label="操作">
             <template slot-scope="scope">
               <el-button size="mini"
-                         @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
+                         @click="showtc(scope.$index, scope.row,'dialogFormhospital')">Edit</el-button>
               <el-button size="mini"
                          type="danger"
-                         @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                         @click="delhospital(scope.row)">Delete</el-button>
             </template>
           </el-table-column>
         </el-table>
+        <el-dialog title="医院信息修改"
+                   :visible.sync="dialogFormhospital"
+                   append-to-body>
+          <el-form label-position="left"
+                   label-width="80px"
+                   :model="tceditobj">
+            <el-form-item label="医院id">
+              <el-input v-model="tceditobj.hsid"></el-input>
+            </el-form-item>
+            <el-form-item label="医院姓名">
+              <el-input v-model="tceditobj.name"></el-input>
+            </el-form-item>
+            <el-form-item label="图片">
+              <el-input v-model="tceditobj.img"></el-input>
+            </el-form-item>
+            <el-form-item label="医院地址">
+              <el-input v-model="tceditobj.address"></el-input>
+            </el-form-item>
+            <el-form-item label="备注">
+              <el-input v-model="tceditobj.abstract"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer"
+               class="dialog-footer">
+            <el-button @click="dialogFormhospital = false">取 消</el-button>
+            <el-button type="primary"
+                       @click="posthospitaledit()">确 定</el-button>
+          </div>
+        </el-dialog>
         <el-table v-show="isshowOverview"
                   :data="Overviewdata"
                   style="">
@@ -215,17 +282,21 @@
           <el-table-column prop="userid"
                            label="用户id">
           </el-table-column>
+          <el-table-column prop="username"
+                           label="用户姓名">
+          </el-table-column>
           <el-table-column prop="ysid"
                            label="医生id">
+          </el-table-column>
+          <el-table-column prop="docname"
+                           label="医生姓名">
           </el-table-column>
           <el-table-column fixed="right"
                            label="操作">
             <template slot-scope="scope">
               <el-button size="mini"
-                         @click="handleEdit(scope.$index, scope.row)">Edit</el-button>
-              <el-button size="mini"
                          type="danger"
-                         @click="handleDelete(scope.$index, scope.row)">Delete</el-button>
+                         @click="delOverview(scope.row)">Delete</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -263,12 +334,14 @@
                            v-show="false">
           </el-table-column>
           <el-table-column fixed="right"
+                           min-width="120px"
                            label="操作">
             <template slot-scope="scope">
               <el-button size="mini"
-                         @click="glycz(scope.row)">升级为管理员</el-button>
+                         @click="glycz(scope.row,'1')">升级为管理员</el-button>
               <el-button size="mini"
-                         @click="glycz(scope.row)">取消管理员</el-button>
+                         type="danger"
+                         @click="glycz(scope.row,'0')">取消管理员</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -289,8 +362,88 @@ export default {
   },
 
   methods: {
-    glycz (user) {
+    glycz (user, flag) {
       console.log('yonghu', user)
+      this.$api.post(
+        '/users/update',
+        {
+          'id': user.id,
+          'username': user.username,
+          'sex': user.sex,
+          'rfid': user.rfid,
+          'adress': user.adress,
+          'phone': user.phone,
+          'password': user.password,
+          'age': user.age,
+          'isadmin': flag
+        },
+        response => {
+          console.log(response.data, response.data.msg)
+          if (response.data.msg === 'succeed') {
+            this.$notify({
+              title: '成功',
+              message: '修改成功',
+              type: 'success'
+            })
+            this.getalluser()
+          } else {
+            this.$notifye.error({
+              title: '错误',
+              message: '修改失败'
+            })
+          }
+        }
+      )
+    },
+    delOverview (Overview) {
+      console.log(Overview, '订单信息')
+      this.$api.delete(
+        '/Overview/delete',
+        {
+          'id': Overview.id
+        },
+        response => {
+          console.log(response.data, response.data.msg)
+          if (response.data.msg === 'succeed') {
+            this.$notify({
+              title: '成功',
+              message: '删除成功',
+              type: 'success'
+            })
+            this.getalhospital()
+          } else {
+            this.$notifye.error({
+              title: '错误',
+              message: '删除失败'
+            })
+          }
+        }
+      )
+    },
+    delhospital (hospital) {
+      console.log(hospital, '医院信息')
+      this.$api.delete(
+        '/hospital/delete',
+        {
+          'hsid': hospital.hsid
+        },
+        response => {
+          console.log(response.data, response.data.msg)
+          if (response.data.msg === 'succeed') {
+            this.$notify({
+              title: '成功',
+              message: '删除成功',
+              type: 'success'
+            })
+            this.getalhospital()
+          } else {
+            this.$notifye.error({
+              title: '错误',
+              message: '删除失败'
+            })
+          }
+        }
+      )
     },
     deluser (user) {
       console.log(user, '用户')
@@ -312,6 +465,94 @@ export default {
             this.$notifye.error({
               title: '错误',
               message: '删除失败'
+            })
+          }
+        }
+      )
+    },
+    deldoc (doc) {
+      console.log(doc, '医生')
+      this.$api.delete(
+        '/doctor/delete',
+        {
+          'ysid': doc.ysid
+        },
+        response => {
+          console.log(response.data, response.data.msg)
+          if (response.data.msg === 'succeed') {
+            this.$notify({
+              title: '成功',
+              message: '删除成功',
+              type: 'success'
+            })
+            this.getalldoctor()
+          } else {
+            this.$notifye.error({
+              title: '错误',
+              message: '删除失败'
+            })
+          }
+        }
+      )
+    },
+    posthospitaledit () {
+      console.log(this.tceditobj, '当前修改提交数据')
+      this.$api.post(
+        '/hospital/update',
+        {
+          'name': this.tceditobj.name,
+          'img': this.tceditobj.img,
+          'abstract': this.tceditobj.abstract,
+          'hsid': this.tceditobj.hsid,
+          'address': this.tceditobj.address
+        },
+        response => {
+          console.log(response.data, response.data.msg)
+          if (response.data.msg === 'succeed') {
+            this.$notify({
+              title: '成功',
+              message: '修改成功',
+              type: 'success'
+            })
+            this.dialogFormhospital = false
+            this.tceditobj = { ysid: null, name: null, age: null, img: null, sex: null, office: null, abstract: null, hsid: null }
+          } else {
+            this.$notifye.error({
+              title: '错误',
+              message: '修改失败'
+            })
+          }
+        }
+      )
+    },
+    postdocedit () {
+      console.log(this.tceditobj, '当前修改提交数据')
+      this.$api.post(
+        '/doctor/update',
+        {
+          'ysid': this.tceditobj.ysid,
+          'name': this.tceditobj.name,
+          'age': this.tceditobj.age,
+          'img': this.tceditobj.img,
+          'sex': this.tceditobj.sex,
+          'office': this.tceditobj.office,
+          'abstract': this.tceditobj.abstract,
+          'hsid': this.tceditobj.hsid
+        },
+        response => {
+          console.log(response.data, response.data.msg)
+          if (response.data.msg === 'succeed') {
+            this.$notify({
+              title: '成功',
+              message: '修改成功',
+              type: 'success'
+            })
+            this.dialogFormdoctor = false
+            this.tceditobj = { ysid: null, name: null, age: null, img: null, sex: null, office: null, abstract: null, hsid: null }
+          } else {
+            this.$notifye.error({
+              title: '错误',
+              message: '修改失败'
             })
           }
         }
@@ -449,7 +690,24 @@ export default {
         {},
         response => {
           if (response.status >= 200 && response.status < 300) {
-            this.Overviewdata = response.data
+            var Overviewdata = response.data
+            console.log(Overviewdata, '挂号历史数据源')
+            console.log(this.userdata, this.doctordata, '用户和医生数据')
+            for (var i = 0; i < Overviewdata.length; i++) {
+              for (var j = 0; j < this.userdata.length; j++) {
+                if (Overviewdata[i].userid === this.userdata[j].id) {
+                  Overviewdata[i].username = this.userdata[j].username
+                  break
+                }
+              }
+              for (var k = 0; k < this.doctordata.length; k++) {
+                if (Overviewdata[i].userid === this.doctordata[k].ysid) {
+                  Overviewdata[i].docname = this.doctordata[k].name
+                  break
+                }
+              }
+            }
+            this.Overviewdata = Overviewdata
             console.log(this.Overviewdata, '挂号历史数据')
           } else {
             console.log(response.message)
@@ -474,7 +732,10 @@ export default {
       hospitaldata: null,
       Overviewdata: null,
       dialogFormuser: false,
-      tceditobj: { id: null, username: null, sex: null, rfid: null, adress: null, phone: null, password: null, age: null, isadmin: null }
+      dialogFormdoctor: false,
+      dialogFormhospital: false,
+      tceditobj: { id: null, username: null, sex: null, rfid: null, adress: null, phone: null, password: null, age: null, isadmin: null },
+      tceditobjdoctor: { ysid: null, name: null, age: null, img: null, sex: null, office: null, abstract: null, hsid: null }
 
     }
   },
