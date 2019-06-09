@@ -8,11 +8,14 @@ import 'element-ui/lib/theme-chalk/index.css'
 import Api from './api/axios.js'
 import store from './store/index'
 import echarts from 'echarts'
+import axios from 'axios'
 const VueUploadComponent = require('vue-upload-component')
 Vue.component('file-upload', VueUploadComponent)
 Vue.prototype.$echarts = echarts
 Vue.prototype.$api = Api
 Vue.prototype.$store = store
+Vue.prototype.robotapi = '/robotapi'
+Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)

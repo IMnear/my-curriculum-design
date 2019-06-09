@@ -6,11 +6,18 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/robotapi': { //此处并非和url一致
+        target: 'http://openapi.tuling123.com/openapi/api/v2',
+        changeOrigin: true, //允许跨域
+        pathRewrite: {
+          '^/robotapi': ''
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
